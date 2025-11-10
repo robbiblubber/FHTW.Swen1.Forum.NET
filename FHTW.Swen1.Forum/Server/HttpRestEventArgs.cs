@@ -80,19 +80,13 @@ public class HttpRestEventArgs: EventArgs
     // public methods                                                                                                   //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    public void Respond(HttpStatusCode statusCode, JsonObject? content)
-    {
-        Respond((int) statusCode, content);
-    }
-
-
     /// <summary>Sends a response to the request.</summary>
     /// <param name="statusCode">HTTP status code.</param>
     /// <param name="content">Response message JSON content.</param>
-    public void Respond(int statusCode, JsonObject? content)
+    public void Respond(HttpStatusCode statusCode, JsonObject? content)
     {
         HttpListenerResponse response = Context.Response;
-        response.StatusCode = statusCode;
+        response.StatusCode = (int) statusCode;
         string rstr = content?.ToString() ?? string.Empty;
 
         Console.ForegroundColor = ConsoleColor.Green;

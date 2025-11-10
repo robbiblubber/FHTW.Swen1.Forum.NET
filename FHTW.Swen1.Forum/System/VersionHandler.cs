@@ -4,10 +4,19 @@ using System.Text.Json.Nodes;
 using FHTW.Swen1.Forum.Handlers;
 using FHTW.Swen1.Forum.Server;
 
+
+
 namespace FHTW.Swen1.Forum.System;
 
+/// <summary>This class implements a Handler for version endpoints.</summary>
 public sealed class VersionHandler: Handler, IHandler
 {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // [override] Handler                                                                                               //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /// <summary>Handles a request if possible.</summary>
+    /// <param name="e">Event arguments.</param>
     public override void Handle(HttpRestEventArgs e)
     {
         if(e.Path.StartsWith("/version"))

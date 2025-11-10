@@ -73,7 +73,7 @@ public sealed class HttpRestServer: IDisposable
 
                 if(!args.Responded)
                 {
-                    args.Respond((int) HttpStatusCode.NotFound, new() { ["success"] = false, ["reason"] = "Not found." });
+                    args.Respond(HttpStatusCode.NotFound, new() { ["success"] = false, ["reason"] = "Not found." });
                 }
             });
         }
