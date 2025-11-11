@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Reflection;
 using System.Text.Json.Nodes;
 
 using FHTW.Swen1.Forum.Handlers;
@@ -23,7 +24,11 @@ public sealed class VersionHandler: Handler, IHandler
         {
             if((e.Path == "/version") && (e.Method == HttpMethod.Get))
             {
+                e.Respond(HttpStatusCode.OK, new JsonObject() 
+                          { ["success"] = true, ["version"] = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown" });
 
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"[{nameof(VersionHandler)} Handled {e.Method.ToString()} {e.Path}.");
             }
             else
             {
