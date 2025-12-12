@@ -1,48 +1,60 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
+using FHTW.Swen1.Forum.Repositories;
+
 
 
 namespace FHTW.Swen1.Forum.System;
 
-public sealed class User: Atom, IAtom
+public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
 {
-    private string? _UserName = null;
-
-    private bool _New;
-
-    private string? _PasswordHash = null;
+    private static UserRepository _Repository = new();
 
 
-
-    public User(Session? session = null)
+    public User(Session? session)
     {
         _EditingSession = session;
-        _New = true;
     }
 
+    public User(): this(null)
+    {}
 
-    public static User Get(string userName, Session? session = null)
+
+    public static User? Get(string userName, Session? session = null)
     {
-        // TODO: load user and return if admin or owner.
-        throw new NotImplementedException();
+        return _Repository.Get(userName, session);
     }
 
+
+    protected override IRepository _GetRepository()
+    {
+        return _Repository;
+    }
+
+
+    public bool IsAdmin { get; set; } = false;
 
     public string UserName
     {
-        get { return _UserName ?? string.Empty; }
+        get { return ((string?) ((__IVerifiable) this).__InternalID) ?? string.Empty; }
         set 
         {
-            if(!_New) { throw new InvalidOperationException("User name cannot be changed."); }
+            if(_InternalID is not null) 
+            { 
+                throw new InvalidOperationException("User name cannot be changed."); 
+            }
             if(string.IsNullOrWhiteSpace(value)) { throw new ArgumentException("User name must not be empty."); }
             
-            _UserName = value; 
+            ((_IAuthentificable) this).__Username = value;
+            ((_IAuthentificable) this).__PasswordHash = null;
         }
     }
 
-    internal static string _HashPassword(string userName, string password)
+    internal static string? _HashPassword(string userName, string password)
     {
+        if(string.IsNullOrWhiteSpace(password)) { return null; }
+
         StringBuilder rval = new();
         foreach(byte i in SHA256.HashData(Encoding.UTF8.GetBytes(userName + password)))
         {
@@ -65,30 +77,29 @@ public sealed class User: Atom, IAtom
 
     public void SetPassword(string password)
     {
-        _PasswordHash = _HashPassword(UserName, password);
+        ((_IAuthentificable) this).__PasswordHash = _HashPassword(UserName, password);
     }
 
     public override void Save()
     {
-        if(!_New) { _EnsureAdminOrOwner(UserName); }
-
-        // TODO: save user to database
-        _PasswordHash = null;
-        _EndEdit();
+        if(IsAdmin) { _EnsureAdmin(); }
+        base.Save();
     }
 
     public override void Delete()
     {
         _EnsureAdminOrOwner(UserName);
-
-        // TODO: delete user from database
-
-        _EndEdit();
+        base.Delete();
     }
 
-    public override void Refresh()
+
+    string? _IAuthentificable.__Username
     {
-        // TODO: refresh user from database
-        _EndEdit();
+        get; set;
+    }
+
+    string? _IAuthentificable.__PasswordHash
+    {
+        get; set;
     }
 }

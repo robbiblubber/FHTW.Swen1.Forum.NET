@@ -15,4 +15,14 @@
     <Content Include="swen.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\res\forum.db" Link="forum.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+  </ItemGroup>
+
 </Project>

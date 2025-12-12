@@ -5,5 +5,5 @@ rem create user
 curl -i -X POST http://localhost:12000/users --header "Content-Type: application/json" -d "{\"username\":\"batman\", \"password\":\"batcave\", \"name\":\"Bruce Wayne\", \"email\":\"office@batman.org\"}"
 
 rem logon as admin/user
-curl -i -X POST http://localhost:12000/sessions --header "Content-Type: application/json" -d "{\"username\":\"admin\", \"password\":\"admin\"}"
+curl -i -X POST http://localhost:12000/sessions --header "Content-Type: application/json" -d "{\"username\":\"root\", \"password\":\"root\"}"
 curl -i -X POST http://localhost:12000/sessions --header "Content-Type: application/json" -d "{\"username\":\"batman\", \"password\":\"batcave\"}"
