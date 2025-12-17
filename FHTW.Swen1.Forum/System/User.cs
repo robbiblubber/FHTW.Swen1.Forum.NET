@@ -12,10 +12,8 @@ public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
     private static UserRepository _Repository = new();
 
 
-    public User(Session? session)
-    {
-        _EditingSession = session;
-    }
+    public User(Session? session): base(session)
+    {}
 
     public User(): this(null)
     {}
@@ -24,6 +22,12 @@ public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
     public static User? Get(string userName, Session? session = null)
     {
         return _Repository.Get(userName, session);
+    }
+
+
+    public static User? Logon(string username, string password)
+    {
+        return _Repository.Logon(username, password);
     }
 
 
@@ -77,7 +81,7 @@ public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
 
     public void SetPassword(string password)
     {
-        ((_IAuthentificable) this).__PasswordHash = _HashPassword(UserName, password);
+        ((_IAuthentificable) this).__PasswordHash = _HashPassword((string) _InternalID!, password);
     }
 
     public override void Save()

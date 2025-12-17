@@ -32,6 +32,7 @@ public sealed class UserHandler: Handler, IHandler
                         EMail = e.Content?["email"]?.GetValue<string>() ?? string.Empty
                     };
                     user.SetPassword(e.Content?["password"]?.GetValue<string>() ?? string.Empty);
+                    user.Save();
 
                     e.Respond(HttpStatusCode.OK, new JsonObject() { ["success"] = true, ["message"] = "User created." });
 

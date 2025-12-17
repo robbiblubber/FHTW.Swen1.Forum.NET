@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Security.Cryptography.X509Certificates;
 
 using FHTW.Swen1.Forum.System;
 
@@ -117,5 +118,21 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
             cmd.BindParam(":e", obj.EMail).BindParam(":a", obj.IsAdmin).BindParam(":u", obj.UserName);
             cmd.ExecuteNonQuery();
         }
+    }
+
+    public User? Logon(string username, string password)
+    {
+        using IDbCommand cmd = _Cn.CreateCommand();
+        cmd.CommandText = "SELECT NAME, EMAIL, HADMIN FROM USERS WHERE USERNAME = :u AND PASSWD = :p";
+        cmd.BindParam(":u", username)
+           .BindParam(":p", User._HashPassword(username, password));
+
+        using IDataReader re = cmd.ExecuteReader();
+        if(re.Read())
+        {
+            return _CreateObject(re);
+        }
+
+        return null;
     }
 }

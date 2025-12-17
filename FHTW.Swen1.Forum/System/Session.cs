@@ -33,13 +33,16 @@ public sealed class Session
     /// <param name="password">Password.</param>
     private Session(string userName, string password)
     {
-        UserName = userName;
-        IsAdmin = (userName == "admin");
         Timestamp = DateTime.UtcNow;
-
         Token = string.Empty;
+
         Random rnd = new();
         for(int i = 0; i < 24; i++) { Token += _ALPHABET[rnd.Next(0, 62)]; }
+
+        if((User = User.Logon(userName, password)) is not null)
+        {
+            lock(_Sessions) { _Sessions.Add(Token, this); }
+        }
     }
 
 
@@ -52,9 +55,13 @@ public sealed class Session
     public string Token { get; }
 
 
-    /// <summary>Gets the user name of the session owner.</summary>
-    public string UserName { get; }
+    public User? User { get; }
 
+    /// <summary>Gets the user name of the session owner.</summary>
+    public string UserName
+    {
+        get { return User?.UserName ?? string.Empty; }
+    }
 
     /// <summary>Gets the session timestamp.</summary>
     public DateTime Timestamp
@@ -85,7 +92,8 @@ public sealed class Session
     /// <returns>Returns a session instance, or NULL if user couldn't be logged in.</returns>
     public static Session? Create(string userName, string password)
     {
-        return new Session(userName, password);
+        Session rval = new Session(userName, password);
+        return rval.Valid ? rval : null;
     }
 
 

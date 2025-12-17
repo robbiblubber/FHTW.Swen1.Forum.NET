@@ -10,12 +10,9 @@ public abstract class Atom: IAtom, __IVerifiable
     protected object? _InternalID;
 
 
-    public Atom()
-    {}
-
-    public Atom(Session? editingSession)
+    public Atom(Session? session)
     {
-        _EditingSession = editingSession;
+        _EditingSession = session;
     }
 
 
