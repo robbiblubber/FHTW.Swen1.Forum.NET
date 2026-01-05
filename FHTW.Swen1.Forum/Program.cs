@@ -1,8 +1,9 @@
-﻿using FHTW.Swen1.Forum.Handlers;
-using FHTW.Swen1.Forum.Server;
-using FHTW.Swen1.Forum.System;
+﻿namespace FHTW.Swen1.Forum;
 
-namespace FHTW.Swen1.Forum;
+using FHTW.Swen1.Forum.Handlers;
+using FHTW.Swen1.Forum.Server;
+
+
 
 /// <summary>Program class.</summary>
 internal static class Program

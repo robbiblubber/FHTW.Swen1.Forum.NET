@@ -1,13 +1,13 @@
-﻿using System.Net;
-using System.Reflection;
-using System.Text.Json.Nodes;
+﻿namespace FHTW.Swen1.Forum.System;
+
+using global::System.Net;
+using global::System.Reflection;
+using global::System.Text.Json.Nodes;
 
 using FHTW.Swen1.Forum.Handlers;
 using FHTW.Swen1.Forum.Server;
 
 
-
-namespace FHTW.Swen1.Forum.System;
 
 /// <summary>This class implements a Handler for version endpoints.</summary>
 public sealed class VersionHandler: Handler, IHandler

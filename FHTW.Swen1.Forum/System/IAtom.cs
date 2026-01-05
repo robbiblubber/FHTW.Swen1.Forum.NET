@@ -1,5 +1,7 @@
 ﻿namespace FHTW.Swen1.Forum.System;
 
+
+
 /// <summary>Data objects implement this interface.</summary>
 public interface IAtom
 {

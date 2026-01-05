@@ -1,9 +1,10 @@
-﻿using System.Net;
+﻿namespace FHTW.Swen1.Forum.Server;
+
+using global::System.Net;
 
 
 
-namespace FHTW.Swen1.Forum.Server;
-
+/// <summary>This class implements a REST server over HTTP.</summary>
 public sealed class HttpRestServer: IDisposable
 {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

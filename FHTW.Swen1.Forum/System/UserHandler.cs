@@ -1,12 +1,12 @@
-﻿using System.Net;
-using System.Text.Json.Nodes;
+﻿namespace FHTW.Swen1.Forum.System;
+
+using global::System.Net;
+using global::System.Text.Json.Nodes;
 
 using FHTW.Swen1.Forum.Handlers;
 using FHTW.Swen1.Forum.Server;
 
 
-
-namespace FHTW.Swen1.Forum.System;
 
 /// <summary>This class implements a Handler for user endpoints.</summary>
 public sealed class UserHandler: Handler, IHandler

@@ -1,22 +1,60 @@
-﻿using System.Data;
-using System.Security.Cryptography.X509Certificates;
+﻿namespace FHTW.Swen1.Forum.Repositories;
+
+using global::System.Data;
+using global::System.Security.Cryptography.X509Certificates;
 
 using FHTW.Swen1.Forum.System;
-
-namespace FHTW.Swen1.Forum.Repositories;
 
 
 
 public sealed class UserRepository: Repository<User>, IRepository<User>, IRepository
 {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // public methods                                                                                                   //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /// <summary>Performs a logon operation for a user.</summary>
+    /// <param name="username">User name.</param>
+    /// <param name="password">Password.</param>
+    /// <returns>Returns a user object for successful logon, otherwise returns NULL.</returns>
+    public User? Logon(string username, string password)
+    {
+        using IDbCommand cmd = _Cn.CreateCommand();
+        cmd.CommandText = "SELECT NAME, EMAIL, HADMIN FROM USERS WHERE USERNAME = :u AND PASSWD = :p";
+        cmd.BindParam(":u", username)
+           .BindParam(":p", User._HashPassword(username, password));
+
+        using IDataReader re = cmd.ExecuteReader();
+        if(re.Read())
+        {
+            return _CreateObject(re);
+        }
+
+        return null;
+    }
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // [override] Repository<T>                                                                                         //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /// <summary>Creates an objevt from a data reader.</summary>
+    /// <param name="re">Data reader.</param>
+    /// <returns>Returns an object.</returns>
     protected override User _CreateObject(IDataReader re)
     {
         User rval = new();
         ((__IVerifiable) rval).__InternalID = re.GetString("USERNAME");
+
         return _RefreshObject(re, rval);
     }
 
 
+    /// <summary>Refreshes an object from a data reader.</summary>
+    /// <param name="re">Data reader.</param>
+    /// <param name="rval">Object.</param>
+    /// <returns>Returns the objevt that has been refreshed.</returns>
     protected override User _RefreshObject(IDataReader re, User obj)
     {
         obj.FullName = re.GetString("NAME");
@@ -27,6 +65,10 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
     }
 
 
+    /// <summary>Gets an object by its ID.</summary>
+    /// <param name="id">Object ID.</param>
+    /// <param name="session">Session.</param>
+    /// <returns>Returns the requested object or NULL if no object was found.</returns>
     public override User? Get(object id, Session? session = null)
     {
         using IDbCommand cmd = _Cn.CreateCommand();
@@ -43,6 +85,9 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
     }
 
 
+    /// <summary>Gets all objects.</summary>
+    /// <param name="session">Session.</param>
+    /// <returns>Returns a set containing all objects for the repository type.</returns>
     public override IEnumerable<User> GetAll(Session? session = null)
     {
         using IDbCommand cmd = _Cn.CreateCommand();
@@ -60,6 +105,8 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
     }
 
 
+    /// <summary>Refreshes the object with persistant data.</summary>
+    /// <param name="obj">Object.</param>
     public override void Refresh(User obj)
     {
         using IDbCommand cmd = _Cn.CreateCommand();
@@ -74,15 +121,8 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
     }
 
 
-    public override void Delete(User obj)
-    {
-        using IDbCommand cmd = _Cn.CreateCommand();
-        cmd.CommandText = "DELETE FROM USERS WHERE USERNAME = :u";
-        cmd.BindParam(":u", obj.UserName);
-        cmd.ExecuteNonQuery();
-    }
-
-
+    /// <summary>Saves the object to persistance layer.</summary>
+    /// <param name="obj">Object.</param>
     public override void Save(User obj)
     {
         if(((__IVerifiable) obj).__InternalID is null)
@@ -120,19 +160,14 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
         }
     }
 
-    public User? Logon(string username, string password)
+
+    /// <summary>Deletes the object from persistance layer.</summary>
+    /// <param name="obj">Object.</param>
+    public override void Delete(User obj)
     {
         using IDbCommand cmd = _Cn.CreateCommand();
-        cmd.CommandText = "SELECT NAME, EMAIL, HADMIN FROM USERS WHERE USERNAME = :u AND PASSWD = :p";
-        cmd.BindParam(":u", username)
-           .BindParam(":p", User._HashPassword(username, password));
-
-        using IDataReader re = cmd.ExecuteReader();
-        if(re.Read())
-        {
-            return _CreateObject(re);
-        }
-
-        return null;
+        cmd.CommandText = "DELETE FROM USERS WHERE USERNAME = :u";
+        cmd.BindParam(":u", obj.UserName);
+        cmd.ExecuteNonQuery();
     }
 }

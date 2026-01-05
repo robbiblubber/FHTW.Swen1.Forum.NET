@@ -1,5 +1,7 @@
 ﻿namespace FHTW.Swen1.Forum.System;
 
+
+
 /// <summary>This class represents a session.</summary>
 public sealed class Session
 {
@@ -48,41 +50,6 @@ public sealed class Session
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // public properties                                                                                                //
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /// <summary>Gets the session token.</summary>
-    public string Token { get; }
-
-
-    public User? User { get; }
-
-    /// <summary>Gets the user name of the session owner.</summary>
-    public string UserName
-    {
-        get { return User?.UserName ?? string.Empty; }
-    }
-
-    /// <summary>Gets the session timestamp.</summary>
-    public DateTime Timestamp
-    {
-        get; private set;
-    }
-
-
-    /// <summary>Gets if the session is valid.</summary>
-    public bool Valid
-    {
-        get { return _Sessions.ContainsKey(Token); }
-    }
-
-
-    /// <summary>Gets a value indicating if the session owner has administrative privileges.</summary>
-    public bool IsAdmin { get; }
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // public static methods                                                                                            //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -119,11 +86,6 @@ public sealed class Session
     }
 
 
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // public static methods                                                                                            //
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     /// <summary>Closes all outdated sessions.</summary>
     private static void _Cleanup()
     {
@@ -140,8 +102,47 @@ public sealed class Session
     }
 
 
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // public static methods                                                                                            //
+    // public properties                                                                                                //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /// <summary>Gets the session token.</summary>
+    public string Token { get; }
+
+
+    /// <summary>Gets the session user.</summary>
+    public User? User { get; }
+
+
+    /// <summary>Gets the user name of the session owner.</summary>
+    public string UserName
+    {
+        get { return User?.UserName ?? string.Empty; }
+    }
+
+
+    /// <summary>Gets the session timestamp.</summary>
+    public DateTime Timestamp
+    {
+        get; private set;
+    }
+
+
+    /// <summary>Gets if the session is valid.</summary>
+    public bool Valid
+    {
+        get { return _Sessions.ContainsKey(Token); }
+    }
+
+
+    /// <summary>Gets a value indicating if the session owner has administrative privileges.</summary>
+    public bool IsAdmin { get; }
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // public methods                                                                                                   //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     /// <summary>Closes the session.</summary>

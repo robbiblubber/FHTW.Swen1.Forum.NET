@@ -1,12 +1,12 @@
-﻿using System.Net;
-using System.Text;
-using System.Text.Json.Nodes;
+﻿namespace FHTW.Swen1.Forum.Server;
+
+using global::System.Net;
+using global::System.Text;
+using global::System.Text.Json.Nodes;
 
 using FHTW.Swen1.Forum.System;
 
 
-
-namespace FHTW.Swen1.Forum.Server;
 
 /// <summary>This class defines event arguments for the <see cref="HttpRestServer.RequestReceived"/> event.</summary>
 public class HttpRestEventArgs: EventArgs
