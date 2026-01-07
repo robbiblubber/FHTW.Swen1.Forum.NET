@@ -20,7 +20,7 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
     public User? Logon(string username, string password)
     {
         using IDbCommand cmd = _Cn.CreateCommand();
-        cmd.CommandText = "SELECT NAME, EMAIL, HADMIN FROM USERS WHERE USERNAME = :u AND PASSWD = :p";
+        cmd.CommandText = "SELECT USERNAME, NAME, EMAIL, HADMIN FROM USERS WHERE USERNAME = :u AND PASSWD = :p";
         cmd.BindParam(":u", username)
            .BindParam(":p", User._HashPassword(username, password));
 
