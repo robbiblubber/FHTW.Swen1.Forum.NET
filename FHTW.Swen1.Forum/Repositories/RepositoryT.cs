@@ -10,7 +10,7 @@ using FHTW.Swen1.Forum.System;
 
 /// <summary>This class provides a generic base implementation for repository classes.</summary>
 /// <typeparam name="T">Type.</typeparam>
-public abstract class Repository<T>: IRepository<T>, IRepository where T: IAtom, __IVerifiable, new()
+public abstract class Repository<T>: IRepository<T>, IRepository where T: IAtom, __IVerifiable
 {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // private members                                                                                                  //
@@ -51,7 +51,7 @@ public abstract class Repository<T>: IRepository<T>, IRepository where T: IAtom,
     /// <returns>Returns an object.</returns>
     protected virtual T _CreateObject(IDataReader re)
     {
-        T rval = new();
+        T rval = (T) Activator.CreateInstance(typeof(T))!;
         ((__IVerifiable) rval).__InternalID = re.GetInt("ID");
         
         return _RefreshObject(re, rval);

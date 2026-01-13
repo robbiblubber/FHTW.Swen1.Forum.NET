@@ -6,7 +6,7 @@ using FHTW.Swen1.Forum.System;
 
 /// <summary>Typed repository classes implement this interface.</summary>
 /// <typeparam name="T">Type.</typeparam>
-public interface IRepository<T>: IRepository where T: IAtom, __IVerifiable, new()
+public interface IRepository<T>: IRepository where T: IAtom, __IVerifiable
 {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // public methods                                                                                                   //

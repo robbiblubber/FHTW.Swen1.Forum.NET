@@ -57,4 +57,14 @@ internal static class _RepositoryExtensions
     {
         return re.GetBoolean(re.GetOrdinal(fieldName));
     }
+
+
+    /// <summary>Gets the DateTime value for the field specified.</summary>
+    /// <param name="re">Data reader.</param>
+    /// <param name="fieldName">Field name.</param>
+    /// <returns>Returns the Boolean value for the field.</returns>
+    public static DateTime GetDateTime(this IDataReader re, string fieldName)
+    {
+        return re.GetDateTime(re.GetOrdinal(fieldName));
+    }
 }

@@ -1,12 +1,12 @@
 ﻿namespace FHTW.Swen1.Forum.Repositories;
 
 using global::System.Data;
-using global::System.Security.Cryptography.X509Certificates;
 
 using FHTW.Swen1.Forum.System;
 
 
 
+/// <summary>This class provides a repository for user objects.</summary>
 public sealed class UserRepository: Repository<User>, IRepository<User>, IRepository
 {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // [override] Repository<T>                                                                                         //
+    // [override] Repository<User>                                                                                      //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     /// <summary>Creates an objevt from a data reader.</summary>
@@ -93,15 +93,11 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
         using IDbCommand cmd = _Cn.CreateCommand();
         cmd.CommandText = "SELECT USERNAME, NAME, EMAIL, HADMIN FROM USERS";
 
-        List<User> rval = new List<User>();
-
         using IDataReader re = cmd.ExecuteReader();
         while(re.Read())
         {
-            rval.Add(_CreateObject(re));
+            yield return _CreateObject(re);
         }
-
-        return rval;
     }
 
 

@@ -30,7 +30,7 @@ public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
 
 
     /// <summary>Creates a new instance of this class.</summary>
-    public User(): this(null)
+    internal User(): this(null)
     {}
 
 
