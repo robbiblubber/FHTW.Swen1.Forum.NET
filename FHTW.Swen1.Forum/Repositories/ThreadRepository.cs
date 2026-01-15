@@ -139,6 +139,13 @@ public sealed class ThreadRepository: Repository<Thread>, IRepository<Thread>, I
 
         cmd.BindParam(":t", obj.Title).BindParam(":m", obj.Time).BindParam(":o", obj.Owner)
            .ExecuteNonQuery();
+
+        if(((__IVerifiable) obj).__InternalID is null)
+        {
+            using IDbCommand rcmd = _Cn.CreateCommand();
+            rcmd.CommandText = $"SELECT last_insert_rowid()";
+            ((__IVerifiable) obj).__InternalID = Convert.ToInt32(rcmd.ExecuteScalar());
+        }
     }
 
 

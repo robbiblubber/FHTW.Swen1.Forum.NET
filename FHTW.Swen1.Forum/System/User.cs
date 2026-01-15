@@ -30,7 +30,7 @@ public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
 
 
     /// <summary>Creates a new instance of this class.</summary>
-    internal User(): this(null)
+    private User(): this(null)
     {}
 
 
@@ -135,7 +135,14 @@ public sealed class User: Atom, IAtom, __IVerifiable, _IAuthentificable
     /// <param name="password">Password.</param>
     public void SetPassword(string password)
     {
-        ((_IAuthentificable) this).__PasswordHash = _HashPassword((string) _InternalID!, password);
+        string? uname = (string?) _InternalID ?? ((_IAuthentificable) this).__Username;
+        
+        if(string.IsNullOrWhiteSpace(uname))
+        {
+            throw new InvalidOperationException("User name must be set before setting the password.");
+        }
+
+        ((_IAuthentificable) this).__PasswordHash = _HashPassword(uname, password);
     }
 
 

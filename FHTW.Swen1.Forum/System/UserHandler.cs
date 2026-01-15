@@ -25,7 +25,7 @@ public sealed class UserHandler: Handler, IHandler
             {
                 try
                 {
-                    User user = new()
+                    User user = new(null)
                     {
                         UserName = e.Content?["username"]?.GetValue<string>() ?? string.Empty,
                         FullName = e.Content?["fullname"]?.GetValue<string>() ?? string.Empty,

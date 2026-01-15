@@ -51,7 +51,7 @@ public abstract class Repository<T>: IRepository<T>, IRepository where T: IAtom,
     /// <returns>Returns an object.</returns>
     protected virtual T _CreateObject(IDataReader re)
     {
-        T rval = (T) Activator.CreateInstance(typeof(T))!;
+        T rval = (T) Activator.CreateInstance(typeof(T), true)!;
         ((__IVerifiable) rval).__InternalID = re.GetInt("ID");
         
         return _RefreshObject(re, rval);

@@ -3,7 +3,48 @@ curl -i -X GET http://localhost:12000/version --header "Content-Type: applicatio
 
 rem create user
 curl -i -X POST http://localhost:12000/users --header "Content-Type: application/json" -d "{\"username\":\"batman\", \"password\":\"batcave\", \"name\":\"Bruce Wayne\", \"email\":\"office@batman.org\"}"
+curl -i -X POST http://localhost:12000/users --header "Content-Type: application/json" -d "{\"username\":\"oswin\", \"password\":\"souffle\", \"name\":\"Clara Oswald\"}"
 
-rem logon as admin/user
-curl -i -X POST http://localhost:12000/sessions --header "Content-Type: application/json" -d "{\"username\":\"root\", \"password\":\"root\"}"
+rem shouldn't work
+curl -i -X POST http://localhost:12000/users --header "Content-Type: application/json" -d "{\"username\":\"oswin\", \"password\":\"none\", \"name\":\"Oswin Oswald\"}"
+
+rem logon
 curl -i -X POST http://localhost:12000/sessions --header "Content-Type: application/json" -d "{\"username\":\"batman\", \"password\":\"batcave\"}"
+curl -i -X POST http://localhost:12000/sessions --header "Content-Type: application/json" -d "{\"username\":\"oswin\", \"password\":\"souffle\"}"
+
+
+rem create thread
+curl -i -X POST http://localhost:12000/threads --header "Content-Type: application/json" -d "{\"title\":\"Everything is Weird\"}" --header "Authorization: Bearer TEST::oswin"
+curl -i -X POST http://localhost:12000/threads --header "Content-Type: application/json" -d "{\"title\":\"Everything is Weird\"}" --header "Authorization: Bearer TEST::oswin"
+curl -i -X POST http://localhost:12000/threads --header "Content-Type: application/json" -d "{\"title\":\"Everything is Weird\"}" --header "Authorization: Bearer TEST::oswin"
+curl -i -X POST http://localhost:12000/threads --header "Content-Type: application/json" -d "{\"title\":\"Everything is Weird\"}" --header "Authorization: Bearer TEST::oswin"
+
+rem edit thread
+curl -i -X PUT http://localhost:12000/threads/1 --header "Content-Type: application/json" -d "{\"title\":\"Everything is Cool\"}" --header "Authorization: Bearer TEST::oswin"
+
+rem query thread
+curl -i -X GET http://localhost:12000/threads/1 --header "Content-Type: application/json" --header "Authorization: Bearer TEST::oswin"
+
+rem delete thread
+curl -i -X DELETE http://localhost:12000/threads/4 --header "Content-Type: application/json" --header "Authorization: Bearer TEST::oswin"
+
+
+rem create entry
+curl -i -X POST http://localhost:12000/entries --header "Content-Type: application/json" -d "{\"text\":\"I agree.\", \"thread\":1}" --header "Authorization: Bearer TEST::oswin"
+
+rem edit entry
+curl -i -X PUT http://localhost:12000/entries/1 --header "Content-Type: application/json" -d "{\"text\":\"I disagree.\"}" --header "Authorization: Bearer TEST::oswin"
+
+rem query entry
+curl -i -X GET http://localhost:12000/entries/1 --header "Content-Type: application/json" --header "Authorization: Bearer TEST::oswin"
+
+rem delete entry
+rem should fail
+curl -i -X DELETE http://localhost:12000/entries/1 --header "Content-Type: application/json" --header "Authorization: Bearer TEST::batman"
+
+rem should work
+curl -i -X DELETE http://localhost:12000/entries/1 --header "Content-Type: application/json" --header "Authorization: Bearer TEST::oswin"
+
+
+rem get entries for thread
+curl -i -X GET http://localhost:12000/threads/1/entries --header "Content-Type: application/json" --header "Authorization: Bearer TEST::oswin"

@@ -44,7 +44,7 @@ public sealed class UserRepository: Repository<User>, IRepository<User>, IReposi
     /// <returns>Returns an object.</returns>
     protected override User _CreateObject(IDataReader re)
     {
-        User rval = new();
+        User rval = new(null);
         ((__IVerifiable) rval).__InternalID = re.GetString("USERNAME");
 
         return _RefreshObject(re, rval);

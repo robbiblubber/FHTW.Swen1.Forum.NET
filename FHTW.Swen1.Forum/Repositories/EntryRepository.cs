@@ -123,6 +123,13 @@ public sealed class EntryRepository: Repository<Entry>, IRepository<Entry>, IRep
 
         cmd.BindParam(":t", obj.Text).BindParam(":m", obj.Time).BindParam(":p", obj.Thread.ID).BindParam(":o", obj.Owner)
            .ExecuteNonQuery();
+
+        if(((__IVerifiable) obj).__InternalID is null)
+        {
+            using IDbCommand rcmd = _Cn.CreateCommand();
+            rcmd.CommandText = $"SELECT last_insert_rowid()";
+            ((__IVerifiable) obj).__InternalID = Convert.ToInt32(rcmd.ExecuteScalar());
+        }
     }
 
 

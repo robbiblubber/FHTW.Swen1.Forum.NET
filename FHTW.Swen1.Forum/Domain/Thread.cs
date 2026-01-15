@@ -32,7 +32,7 @@ public class Thread: Atom, IAtom, __IVerifiable
 
 
     /// <summary>Creates a new instance of this class.</summary>
-    internal Thread(): this(null)
+    protected Thread(): this(null)
     {}
 
 

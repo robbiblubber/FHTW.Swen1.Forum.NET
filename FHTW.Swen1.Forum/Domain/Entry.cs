@@ -31,7 +31,7 @@ public class Entry: Atom, IAtom, __IVerifiable
 
 
     /// <summary>Creates a new instance of this class.</summary>
-    internal Entry(): this(null, new Thread())
+    protected Entry(): this(null, new Thread(null))
     {}
 
 
